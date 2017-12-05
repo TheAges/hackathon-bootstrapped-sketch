@@ -1,23 +1,41 @@
 function setup() {
-  createCanvas(360,640);
-  
-  //Deal with microphone
-  mic = new p5.AudioIn();
-  mic.start();
+
+	// Create the canvas
+	createCanvas(windowWidth, windowHeight);
+
+	// Deal with microphone
+	mic = new p5.AudioIn();
+	mic.start();
 }
 
 function draw() {
-  var volume = mic.getLevel();
-  
-  //If the volume is not enought, re-map it (set a higher newMax).
-  var newMax = 5;
-  volume = map(volume,0,1,0,newMax);
-  
-  background(200);
-  push();  //Start with transformations
-  translate(width/2,height/2);
-  var size = map(volume,0,1,width/5,width/2);
-  ellipse(0,0,size);
-  pop();  //All transformation are now dropped and the coordinate system is resetted.
-  
+
+	//get the volume
+	var volume = mic.getLevel();
+
+	background(200);
+
+	push();
+
+	//Start with transformations
+	//move to the center of the canvas
+	translate(width / 2, height / 2);
+
+	// Set the new size. Volume goes from 0 to 1.
+	// You can remap it to any size you want.
+	var minSize = width / 20;
+	var maxSize = width;
+	var size = map(volume, 0, 1, minSize, maxSize);
+
+	//draw an ellipse
+	ellipse(0, 0, size);
+
+	//All transformation are now dropped and the coordinate system is resetted.
+	pop();
+
+}
+
+//if the window is resized, update the sketchs
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
